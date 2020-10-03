@@ -3,6 +3,7 @@ import * as socket from './socket'
 
 // Config
 import Api from './index'
+import {ApiOptions} from './types'
 
 import {
   ChartDerivParameters,
@@ -23,11 +24,11 @@ export enum ApiError {
 /**
  * Socket.io API
  */
-export default class Socket extends Api {
+export default class ApiWithSocket extends Api {
   protected readonly _socket: socket.SocketClient
 
-  public constructor () {
-    super()
+  public constructor (options?: ApiOptions) {
+    super(options)
     this._socket = new socket.SocketClient(this._endpoint, {
       'force new connection': true,
       reconnectionDelay: 500,

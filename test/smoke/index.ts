@@ -5,7 +5,7 @@ import { signMessage } from '../../src/Utils/signature'
 import { ORDER_ACTION, Tickers, Orderbook } from '../../src/Utils/types'
 // Constants
 import { userCredentials } from '../../src/constants/userCredentials'
-import Socket from '../../src/Api/oexSockets'
+import ApiWithSocket from '../../src/Api/oexSockets'
 
 const assert = chai.assert
 
@@ -81,7 +81,6 @@ describe('OEX tests', () => {
             postOrderbookFormRequestBody
           )
         } catch (err) {
-          console.error('post order sign err is ', err)
           assert.fail(err.response.status, 'Request failed')
         }
       })
@@ -101,7 +100,6 @@ describe('OEX tests', () => {
         try {
           await api.postOrderSign(postOrderbookRequestBody)
         } catch (err) {
-          console.error('post order sign err is ', err)
           assert.fail(err.response.status, 'Request failed')
         }
       })
@@ -164,10 +162,9 @@ describe('OEX tests', () => {
   })
 
   describe('OEX socket tests', () => {
-    let socket = new Socket()
+    const socket = new ApiWithSocket()
 
     before(async () => {
-      socket = new Socket()
       const loginData = await socket.getAuthLoginData()
       socket.signature = signMessage({
         data: loginData,
@@ -175,11 +172,7 @@ describe('OEX tests', () => {
       })
       socket.authAddress = userCredentials.publicKey
     })
-    afterEach(async () => {
-      socket.onError(err => {
-        console.log('SOCKET ERROR IS ', err)
-      })
-    })
+    
 
     it('chart:asset', done => {
       socket.onError(err => {
