@@ -1,6 +1,6 @@
 {
-  "name": "@opiumteam/oex-sdk",
-  "version": "1.0.8",
+  "name": "@opiumteam/oex-js",
+  "version": "0.1.0",
   "description": "OEX JS SDK",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -17,11 +17,15 @@
     {
       "name": "Ali Nuraldin",
       "email": "ali@opium.team"
+    },
+    {
+      "name": "Riccardo Biosas",
+      "email": "riccardo@opium.team"
     }
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RiccardoBiosas/oex-sdk.git"
+    "url": "git+https://github.com/OpiumProtocol/oex-js.git"
   },
   "files": ["/lib"],
   "dependencies": {
