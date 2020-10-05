@@ -1,20 +1,19 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import * as requests from './requests'
+import * as socket from './socket'
 
 // Config
-import { Namespace, endpoints } from '../config'
-import { ApiOptionsArguments, ApiOptions } from './types'
+import Api from './api'
+import { ApiOptions } from './types'
 
-// Utils
 import {
-  EIP712Message,
-  Orderbook,
-  Tickers,
-  Orders,
-  Trade,
-  Meta,
-  Wallet
-} from './../Utils/types'
+  ChartDerivParameters,
+  OrderbookOrdersTickerParameters,
+  OrderbookOrdersMakerAddressParameters,
+  OrderbookOrdersOverviewParameters,
+  TradesTickerAllParameters,
+  TradesTickerAddressParameters,
+  DerivativeStatsParameters
+} from './socket'
 
 export enum ApiError {
   Unauthorized = 'Unauthorized',
@@ -23,149 +22,230 @@ export enum ApiError {
 }
 
 /**
- * OEX HTTP and Socket.io API
+ * Socket.io API
  */
-export default class Api {
-  private readonly _options: ApiOptions
-  protected readonly _endpoint: string
+export default class ApiWithSocket extends Api {
+  protected readonly _socket: socket.SocketClient
 
-  // private readonly _socket: socket.SocketClient
-
-  protected _authAddress: string | null = null
-  protected _signature: string | null = null
-
-  public constructor (options?: ApiOptionsArguments) {
-    // Options
-    const defaultOptions: ApiOptions = {
-      namespace: Namespace.production
-    }
-
-    this._options = {
-      ...defaultOptions,
-      ...options
-    }
-
-    this._endpoint = endpoints[this._options.namespace]
+  public constructor (options?: ApiOptions) {
+    super(options)
+    this._socket = new socket.SocketClient(this._endpoint, {
+      'force new connection': true,
+      reconnectionDelay: 500,
+      reconnectionAttempts: 10
+    })
   }
 
-  // ================= HTTP API =================
-  // Auth
-  public getAuthLoginData (): Promise<EIP712Message> {
-    return requests.auth.get(this._endpoint)
-  }
-
-  // Orderbook
-  public postOrderForm (
-    order: Orderbook.PostOrderbookForm.RequestBody,
-    authAddress: string = this._authAddress!,
-    signature: string = this._signature!
-  ): Promise<Orderbook.PostOrderbookForm.ResponseBody> {
-    return requests.orderbook.form(
-      this._endpoint,
-      order,
-      authAddress,
-      signature
-    )
-  }
-
-  public postOrderSign (
-    order: Orderbook.PostOrderbook.RequestBody,
-    authAddress: string = this._authAddress!,
-    signature: string = this._signature!
-  ): Promise<unknown> {
-    return requests.orderbook.sign(
-      this._endpoint,
-      order,
-      authAddress,
-      signature
-    )
-  }
-
-  public putOrdersCancel (
-    query: Orderbook.PutOrderbookCancel.RequestQuery,
-    authAddress: string = this._authAddress!,
-    signature: string = this._signature!
-  ): Promise<unknown> {
-    return requests.orderbook.cancel(
-      this._endpoint,
-      query,
-      authAddress,
-      signature
-    )
-  }
-
-  public getOrderPreSubmit (
-    query: Orderbook.GetOrderbookPreSubmit.RequestQuery,
-    authAddress: string = this._authAddress!,
-    signature: string = this._signature!
-  ): Promise<Orderbook.GetOrderbookPreSubmit.ResponseBody> {
-    return requests.orderbook.preSubmit(
-      this._endpoint,
-      query,
-      authAddress,
-      signature
-    )
-  }
+  // ================= Sockets =================
 
   // Helpers
-  public set authAddress (authAddress: string) {
-    this._authAddress = authAddress
+  public onError (fn: Function): void {
+    this._socket.onError(fn)
   }
 
-  public set signature (signature: string) {
-    this._signature = signature
+  // chart:asset
+  public subscribeOnChartsAsset (params: socket.ChartAssetParameters): void {
+    this._socket.subscribe(socket.SocketChannels.CHART_ASSET, params)
   }
 
-  // meta
-  public metaConfig (): Promise<Meta.GetMetaConfig.ResponseBody> {
-    return requests.meta.config(this._endpoint)
+  public unsubscribeOnChartsAsset (payload: socket.ChartAssetParameters): void {
+    this._socket.unsubscribe(socket.SocketChannels.CHART_ASSET, payload)
   }
 
-  public metaTickersSearch (
-    query: Partial<Meta.GetMetaTickersSearchParams.RequestQuery>
-  ): Promise<Meta.GetMetaTickersSearchParams.ResponseBody> {
-    return requests.meta.tickersSearchParams(this._endpoint, query)
+  public onChartsAsset (
+    fn: (response: socket.ChartAssetReturns) => unknown
+  ): void {
+    this._socket.on(socket.SocketChannels.CHART_ASSET, fn)
   }
 
-  // wallet
-  public walletTokenBalance (): Promise<
-    Wallet.GetWalletBalanceTokens.ResponseBody
-    > {
-    return requests.wallet.tokenBalance(this._endpoint)
+  public offChartsAsset (
+    fn: (response: socket.ChartAssetReturns) => unknown
+  ): void {
+    this._socket.off(socket.SocketChannels.CHART_ASSET, fn)
   }
 
-  // tickers
-  public tickersGetAll (
-    query: Partial<Tickers.GetTickers.RequestQuery>
-  ): Promise<Tickers.GetTickers.ResponseBody> {
-    return requests.tickers.all(this._endpoint, query)
+  // chart:deriv
+  public subscribeOnChartsDeriv (payload: ChartDerivParameters): void {
+    this._socket.subscribe(socket.SocketChannels.CHART_DERIV, payload)
   }
 
-  public tickersGetData (
-    hash: string
-  ): Promise<Tickers.GetTickersData.ResponseBody> {
-    return requests.tickers.data(this._endpoint, { hash })
+  public unsubscribeOnChartsDeriv (payload: ChartDerivParameters): void {
+    this._socket.unsubscribe(socket.SocketChannels.CHART_DERIV, payload)
   }
 
-  public tickersGetDerivatives (
-    query: Partial<Tickers.GetTickersDerivatives.RequestQuery>
-  ): Promise<unknown> {
-    return requests.tickers.derivatives(this._endpoint, query)
+  public onChartsDeriv (
+    fn: (response: socket.ChartDerivReturns) => unknown
+  ): void {
+    this._socket.on(socket.SocketChannels.CHART_DERIV, fn)
   }
 
-  // trades
-  public tradesGetAllTradesByAddress (
+  // orderbook:orders:ticker
+  public subscribeOnOrderbookOrdersTicker (
+    payload: OrderbookOrdersTickerParameters
+  ): void {
+    this._socket.subscribe(
+      socket.SocketChannels.ORDERBOOK_ORDERS_TICKER,
+      payload
+    )
+  }
+
+  public unsubscribeOnOrderbookOrdersTicker (
+    payload: OrderbookOrdersTickerParameters
+  ): void {
+    this._socket.unsubscribe(
+      socket.SocketChannels.ORDERBOOK_ORDERS_TICKER,
+      payload
+    )
+  }
+
+  public onOrderbookOrdersTicker (
+    fn: (response: socket.OrderbookOrdersTickerReturns) => unknown
+  ): void {
+    this._socket.on(socket.SocketChannels.ORDERBOOK_ORDERS_TICKER, fn)
+  }
+
+  // orderbook:orders:makerAddress
+  public subscribeOnOrderbookOrdersMakerAddress (
+    payload: Omit<OrderbookOrdersMakerAddressParameters, 'addr' | 'sig'>,
     authAddress: string = this._authAddress!,
     signature: string = this._signature!
-  ): Promise<Trade.GetAllTradesByAddress.ResponseBody> {
-    return requests.trades.allAddress(this._endpoint, authAddress, signature)
+  ): void {
+    this._socket.subscribe(
+      socket.SocketChannels.ORDERBOOK_ORDERS_MAKER_ADDRESS,
+      { ...payload, addr: authAddress, sig: signature }
+    )
   }
 
-  // orders
-  public ordersGetAllOrdersByAddress (
+  public unsubscribeOnOrderbookOrdersMakerAddress (
+    payload: Omit<OrderbookOrdersMakerAddressParameters, 'addr' | 'sig'>,
     authAddress: string = this._authAddress!,
     signature: string = this._signature!
-  ): Promise<Orders.GetAllOrdersByAddress.ResponseBody> {
-    return requests.orders.allAddresses(this._endpoint, authAddress, signature)
+  ): void {
+    this._socket.unsubscribe(
+      socket.SocketChannels.ORDERBOOK_ORDERS_MAKER_ADDRESS,
+      { ...payload, addr: authAddress, sig: signature }
+    )
+  }
+
+  public onOrderbookOrdersMakerAddress (
+    fn: (response: socket.OrderbookOrdersMakerAddressReturns) => unknown
+  ): void {
+    this._socket.on(socket.SocketChannels.ORDERBOOK_ORDERS_MAKER_ADDRESS, fn)
+  }
+
+  // orderbook:orders:overview
+  public subscribeOnOrderbookOrdersOverview (
+    payload: Omit<OrderbookOrdersOverviewParameters, 'addr' | 'sig'>
+  ): void {
+    this._socket.subscribe(socket.SocketChannels.ORDERBOOK_ORDERS_OVERVIEW, {
+      ...payload
+    })
+  }
+
+  public unsubscribeOnOrderbookOrdersOverview (
+    payload: OrderbookOrdersOverviewParameters
+  ): void {
+    this._socket.unsubscribe(
+      socket.SocketChannels.ORDERBOOK_ORDERS_OVERVIEW,
+      payload
+    )
+  }
+
+  public onOrderbookOrdersOverview (
+    fn: (response: socket.OrderbookOrderOverviewReturns) => unknown
+  ): void {
+    this._socket.on(socket.SocketChannels.ORDERBOOK_ORDERS_OVERVIEW, fn)
+  }
+
+  // positions:address
+  public subscribePositions (
+    authAddress: string = this._authAddress!,
+    signature: string = this._signature!
+  ): void {
+    this._socket.subscribe(socket.SocketChannels.POSITION_ADDRESS, {
+      addr: authAddress,
+      sig: signature
+    })
+  }
+
+  public unsubscribePositions (
+    authAddress: string = this._authAddress!,
+    signature: string = this._signature!
+  ): void {
+    this._socket.unsubscribe(socket.SocketChannels.POSITION_ADDRESS, {
+      addr: authAddress,
+      sig: signature
+    })
+  }
+
+  public onPositions (
+    fn: (response: socket.PositionAddressReturns) => unknown
+  ): void {
+    this._socket.on(socket.SocketChannels.POSITION_ADDRESS, fn)
+  }
+
+  // trades:ticker:all
+  public subscribeOnTradesTickerAll (payload: TradesTickerAllParameters): void {
+    this._socket.subscribe(socket.SocketChannels.TRADES_TICKER_ALL, payload)
+  }
+
+  public unsubscribeOnTradesTickerAll (
+    payload: TradesTickerAllParameters
+  ): void {
+    this._socket.unsubscribe(socket.SocketChannels.TRADES_TICKER_ALL, payload)
+  }
+
+  public onTradesTickerAll (
+    fn: (response: socket.TradesTickerAllReturns) => unknown
+  ): void {
+    this._socket.on(socket.SocketChannels.TRADES_TICKER_ALL, fn)
+  }
+
+  // trades:ticker:address
+  public subscribeOnTradesTickerAddress (
+    payload: Omit<TradesTickerAddressParameters, 'addr' | 'sig'>,
+    authAddress = this._authAddress,
+    signature = this._signature
+  ): void {
+    this._socket.subscribe(socket.SocketChannels.TRADES_TICKER_ADDRESS, {
+      ...payload,
+      addr: authAddress,
+      sig: signature
+    })
+  }
+
+  public unsubscribeOnTradesTickerAddress (
+    payload: Omit<TradesTickerAddressParameters, 'addr' | 'sig'>,
+    authAddress = this._authAddress,
+    signature = this._signature
+  ): void {
+    this._socket.unsubscribe(socket.SocketChannels.TRADES_TICKER_ADDRESS, {
+      ...payload,
+      addr: authAddress,
+      sig: signature
+    })
+  }
+
+  public onTradesTickerAddress (
+    fn: (response: Partial<socket.TradesTickerAddressReturns>) => unknown
+  ): void {
+    this._socket.on(socket.SocketChannels.TRADES_TICKER_ADDRESS, fn)
+  }
+
+  // derivative:stats
+  public subscribeOnDerivativeStats (payload: DerivativeStatsParameters): void {
+    this._socket.subscribe(socket.SocketChannels.DERIVATIVE_STATS, payload)
+  }
+
+  public unsubscribeOnDerivativeStats (
+    payload: DerivativeStatsParameters
+  ): void {
+    this._socket.unsubscribe(socket.SocketChannels.DERIVATIVE_STATS, payload)
+  }
+
+  public onDerivativeStats (
+    fn: (response: socket.DerivativeStatsReturns) => unknown
+  ): void {
+    this._socket.on(socket.SocketChannels.DERIVATIVE_STATS, fn)
   }
 }

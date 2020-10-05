@@ -1,11 +1,13 @@
 import chai from 'chai'
 // Communication interface
-import Api from '../../src/Api'
+import Api from '../../src/Api/api'
+import ApiWithSocket from '../../src/Api'
+// Utils
 import { signMessage } from '../../src/Utils/signature'
+// Types
 import { ORDER_ACTION, Tickers, Orderbook } from '../../src/Utils/types'
 // Constants
 import { userCredentials } from '../../src/constants/userCredentials'
-import ApiWithSocket from '../../src/Api/oexSockets'
 
 const assert = chai.assert
 
@@ -172,11 +174,9 @@ describe('OEX tests', () => {
       })
       socket.authAddress = userCredentials.publicKey
     })
-    
 
     it('chart:asset', done => {
       socket.onError(err => {
-        console.log('socket error: ', err)
         assert.equal(err, undefined)
         socket.unsubscribeOnChartsAsset({
           o: selectedTickerData[selectedIndex].oracleId,
@@ -185,7 +185,6 @@ describe('OEX tests', () => {
         done()
       })
       socket.onChartsAsset(msg => {
-        console.log('socket msg: ', msg)
         assert(msg !== undefined)
         socket.unsubscribeOnChartsAsset({
           o: selectedTickerData[selectedIndex].oracleId,
@@ -201,7 +200,6 @@ describe('OEX tests', () => {
 
     it('chart:deriv', done => {
       socket.onError(err => {
-        console.log('socket error: ', err)
         assert.equal(err, undefined)
         socket.unsubscribeOnChartsDeriv({
           t: tickersList[selectedIndex].hash,
