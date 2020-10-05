@@ -1,7 +1,6 @@
 import chai from 'chai'
 // Communication interface
-import Api from '../../src/Api/api'
-import ApiWithSocket from '../../src/Api'
+import { Api } from '../../src/index'
 // Utils
 import { signMessage } from '../../src/Utils/signature'
 // Types
@@ -164,7 +163,7 @@ describe('OEX tests', () => {
   })
 
   describe('OEX socket tests', () => {
-    const socket = new ApiWithSocket()
+    const socket = api
 
     before(async () => {
       const loginData = await socket.getAuthLoginData()

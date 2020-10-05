@@ -1,4 +1,4 @@
-import Api from './Api/api'
+import Api from './Api/index'
 import Utils from './Utils'
 
 export default {
