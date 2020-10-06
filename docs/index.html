@@ -68,6 +68,23 @@
 					<h1>OEX JS SDK</h1>
 				</a>
 				<p>This npm module implements the HTTP and Socket.io API of <a href="https://trade.opium.exchange/">https://trade.opium.exchange/</a></p>
+				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
+					<h2>Installation</h2>
+				</a>
+				<pre><code><span class="hljs-built_in">npm</span> i @opiumteam/oex-js</code></pre>
+				<a href="#examples" id="examples" style="color: inherit; text-decoration: none;">
+					<h2>Examples</h2>
+				</a>
+				<a href="#get-products-list" id="get-products-list" style="color: inherit; text-decoration: none;">
+					<h3>Get products list</h3>
+				</a>
+				<pre><code><span class="hljs-keyword">import</span> { Api } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@opiumteam/oex-js&#x27;</span>
+
+<span class="hljs-keyword">const</span> api = <span class="hljs-keyword">new</span> Api()
+
+api
+  .tickersGetAll()
+  .then(<span class="hljs-function"><span class="hljs-params">tickers</span> =&gt;</span> <span class="hljs-built_in">console</span>.log(tickers))</code></pre>
 				<a href="#development" id="development" style="color: inherit; text-decoration: none;">
 					<h2>Development</h2>
 				</a>
@@ -88,10 +105,16 @@ npm <span class="hljs-keyword">run</span><span class="bash"> docs</span></code><
 						<span>Externals</span>
 					</li>
 					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_src_api_api_.html">&quot;src/<wbr>Api/api&quot;</a>
+					</li>
+					<li class=" tsd-kind-module tsd-is-external">
 						<a href="modules/_src_api_index_.html">&quot;src/<wbr>Api/index&quot;</a>
 					</li>
 					<li class=" tsd-kind-module tsd-is-external">
 						<a href="modules/_src_api_requests_.html">&quot;src/<wbr>Api/requests&quot;</a>
+					</li>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_src_api_socket_.html">&quot;src/<wbr>Api/socket&quot;</a>
 					</li>
 					<li class=" tsd-kind-module tsd-is-external">
 						<a href="modules/_src_api_types_.html">&quot;src/<wbr>Api/types&quot;</a>

@@ -27,7 +27,9 @@
     "type": "git",
     "url": "git+https://github.com/OpiumProtocol/oex-js.git"
   },
-  "files": ["/lib"],
+  "files": [
+    "/lib"
+  ],
   "dependencies": {
     "axios": "^0.19.2",
     "eth-sig-util": "^2.5.3",

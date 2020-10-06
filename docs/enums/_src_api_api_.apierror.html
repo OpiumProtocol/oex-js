@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ORDER_ACTION | OEX JS SDK</title>
+	<title>ApiError | OEX JS SDK</title>
 	<meta name="description" content="Documentation for OEX JS SDK">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,26 +56,19 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_src_utils_types_.html">&quot;src/Utils/types&quot;</a>
+					<a href="../modules/_src_api_api_.html">&quot;src/Api/api&quot;</a>
 				</li>
 				<li>
-					<a href="_src_utils_types_.order_action.html">ORDER_ACTION</a>
+					<a href="_src_api_api_.apierror.html">ApiError</a>
 				</li>
 			</ul>
-			<h1>Enumeration ORDER_ACTION</h1>
+			<h1>Enumeration ApiError</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>Type of <code>Order</code> action</p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
@@ -83,8 +76,9 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Enumeration members</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum tsd-is-external"><a href="_src_utils_types_.order_action.html#ask" class="tsd-kind-icon">ASK</a></li>
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum tsd-is-external"><a href="_src_utils_types_.order_action.html#bid" class="tsd-kind-icon">BID</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum tsd-is-external"><a href="_src_api_api_.apierror.html#expiredtoken" class="tsd-kind-icon">Expired<wbr>Token</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum tsd-is-external"><a href="_src_api_api_.apierror.html#incorrectauthaddress" class="tsd-kind-icon">Incorrectauth<wbr>Address</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum tsd-is-external"><a href="_src_api_api_.apierror.html#unauthorized" class="tsd-kind-icon">Unauthorized</a></li>
 							</ul>
 						</section>
 					</div>
@@ -93,34 +87,34 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Enumeration members</h2>
 				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum tsd-is-external">
-					<a name="ask" class="tsd-anchor"></a>
-					<h3>ASK</h3>
-					<div class="tsd-signature tsd-kind-icon">ASK<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;ASK&quot;</span></div>
+					<a name="expiredtoken" class="tsd-anchor"></a>
+					<h3>Expired<wbr>Token</h3>
+					<div class="tsd-signature tsd-kind-icon">Expired<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;ExpiredToken&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/OpiumProtocol/oex-js/blob/045febe/src/Utils/types.ts#L24">src/Utils/types.ts:24</a></li>
+							<li>Defined in <a href="https://github.com/OpiumProtocol/oex-js/blob/045febe/src/Api/api.ts#L22">src/Api/api.ts:22</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p><code>ASK</code> also referred as <code>Sell</code> order</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum tsd-is-external">
-					<a name="bid" class="tsd-anchor"></a>
-					<h3>BID</h3>
-					<div class="tsd-signature tsd-kind-icon">BID<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;BID&quot;</span></div>
+					<a name="incorrectauthaddress" class="tsd-anchor"></a>
+					<h3>Incorrectauth<wbr>Address</h3>
+					<div class="tsd-signature tsd-kind-icon">Incorrectauth<wbr>Address<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;IncorrectauthAddress&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/OpiumProtocol/oex-js/blob/045febe/src/Utils/types.ts#L28">src/Utils/types.ts:28</a></li>
+							<li>Defined in <a href="https://github.com/OpiumProtocol/oex-js/blob/045febe/src/Api/api.ts#L21">src/Api/api.ts:21</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p><code>BID</code> also referred as <code>Buy</code> order</p>
-						</div>
-					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum tsd-is-external">
+					<a name="unauthorized" class="tsd-anchor"></a>
+					<h3>Unauthorized</h3>
+					<div class="tsd-signature tsd-kind-icon">Unauthorized<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> = &quot;Unauthorized&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/OpiumProtocol/oex-js/blob/045febe/src/Api/api.ts#L20">src/Api/api.ts:20</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 		</div>
@@ -133,7 +127,7 @@
 					<li class="label tsd-is-external">
 						<span>Externals</span>
 					</li>
-					<li class=" tsd-kind-module tsd-is-external">
+					<li class="current tsd-kind-module tsd-is-external">
 						<a href="../modules/_src_api_api_.html">&quot;src/<wbr>Api/api&quot;</a>
 					</li>
 					<li class=" tsd-kind-module tsd-is-external">
@@ -151,7 +145,7 @@
 					<li class=" tsd-kind-module tsd-is-external">
 						<a href="../modules/_src_utils_signature_.html">&quot;src/<wbr>Utils/signature&quot;</a>
 					</li>
-					<li class="current tsd-kind-module tsd-is-external">
+					<li class=" tsd-kind-module tsd-is-external">
 						<a href="../modules/_src_utils_types_.html">&quot;src/<wbr>Utils/types&quot;</a>
 					</li>
 					<li class=" tsd-kind-module tsd-is-external">
@@ -164,29 +158,23 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-enum tsd-parent-kind-module tsd-is-external">
-						<a href="_src_utils_types_.order_action.html" class="tsd-kind-icon">ORDER_<wbr>ACTION</a>
+						<a href="_src_api_api_.apierror.html" class="tsd-kind-icon">Api<wbr>Error</a>
 						<ul>
 							<li class=" tsd-kind-enum-member tsd-parent-kind-enum tsd-is-external">
-								<a href="_src_utils_types_.order_action.html#ask" class="tsd-kind-icon">ASK</a>
+								<a href="_src_api_api_.apierror.html#expiredtoken" class="tsd-kind-icon">Expired<wbr>Token</a>
 							</li>
 							<li class=" tsd-kind-enum-member tsd-parent-kind-enum tsd-is-external">
-								<a href="_src_utils_types_.order_action.html#bid" class="tsd-kind-icon">BID</a>
+								<a href="_src_api_api_.apierror.html#incorrectauthaddress" class="tsd-kind-icon">Incorrectauth<wbr>Address</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum tsd-is-external">
+								<a href="_src_api_api_.apierror.html#unauthorized" class="tsd-kind-icon">Unauthorized</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-is-external tsd-is-not-exported">
-						<a href="../interfaces/_src_utils_types_.imessagetypeproperty.html" class="tsd-kind-icon">IMessage<wbr>Type<wbr>Property</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-is-external">
-						<a href="../interfaces/_src_utils_types_.imessagetypes.html" class="tsd-kind-icon">IMessage<wbr>Types</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-is-external">
-						<a href="../modules/_src_utils_types_.html#eip712message" class="tsd-kind-icon">EIP712<wbr>Message</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-is-external">
-						<a href="../modules/_src_utils_types_.html#ticker" class="tsd-kind-icon">Ticker</a>
+					<li class=" tsd-kind-class tsd-parent-kind-module tsd-is-external">
+						<a href="../classes/_src_api_api_.api.html" class="tsd-kind-icon">Api</a>
 					</li>
 				</ul>
 			</nav>
