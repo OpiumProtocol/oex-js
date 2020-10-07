@@ -2,6 +2,10 @@
 
 This npm module implements the HTTP and Socket.io API of https://trade.opium.exchange/
 
+## Documentation
+
+API Reference - [https://opiumprotocol.github.io/oex-js/](https://opiumprotocol.github.io/oex-js/)
+
 ## Installation
 
 ```
