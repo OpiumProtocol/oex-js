@@ -43,7 +43,7 @@ export default class ApiWithSocket extends Api {
     this._socket.onError(fn)
   }
 
-  public onSocketShutdown(): void {
+  public socketShutdown(): void {
     this._socket.close()
   }
 

@@ -17,7 +17,7 @@ describe('OEX tests', () => {
   const selectedIndex = 0
 
   after(async () => {
-    api.onSocketShutdown()
+    api.socketShutdown()
   })
 
   describe('OEX API', () => {
@@ -178,7 +178,6 @@ describe('OEX tests', () => {
         try {
           await api.walletTokenBalance()
         } catch (err) {
-          console.log('wallet error is: ', err)
           assert.fail(err.response.status, 'Request failed')
         }
       })
