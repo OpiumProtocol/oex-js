@@ -43,6 +43,10 @@ export default class ApiWithSocket extends Api {
     this._socket.onError(fn)
   }
 
+  public onSocketShutdown(): void {
+    this._socket.close()
+  }
+
   // chart:asset
   public subscribeOnChartsAsset (params: socket.ChartAssetParameters): void {
     this._socket.subscribe(socket.SocketChannels.CHART_ASSET, params)

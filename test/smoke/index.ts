@@ -16,6 +16,10 @@ describe('OEX tests', () => {
   let selectedTickerData: Tickers.GetTickersData.ResponseBody
   const selectedIndex = 0
 
+  after(async () => {
+    api.onSocketShutdown()
+  })
+
   describe('OEX API', () => {
     describe('orderbook login', () => {
       it('Login', async () => {
@@ -183,15 +187,6 @@ describe('OEX tests', () => {
 
   describe('OEX socket tests', () => {
     const socket = api
-
-    before(async () => {
-      const loginData = await socket.getAuthLoginData()
-      socket.signature = signMessage({
-        data: loginData,
-        privateKey: userCredentials.privateKey
-      })
-      socket.authAddress = userCredentials.publicKey
-    })
 
     it('chart:asset', done => {
       socket.onError(err => {

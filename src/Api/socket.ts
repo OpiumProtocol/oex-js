@@ -390,7 +390,4 @@ export class SocketClient {
   public close (): void {
     this._socket.close()
   }
-  public disconnect (): void {
-    this._socket.disconnect()
-  }
 }
