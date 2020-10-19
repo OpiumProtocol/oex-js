@@ -119,9 +119,17 @@ export const meta = {
 
 export const wallet = {
   tokenBalance: (
-    endpoint: string
+    endpoint: string,
+    authAddress: string,
+    signature: string
   ): Promise<Wallet.GetWalletBalanceTokens.ResponseBody> =>
-    axios.get(`${endpoint}/wallet/balance/tokens`).then(handleResponse)
+    axios
+      .get(`${endpoint}/wallet/balance/tokens?authAddress=${authAddress}`, {
+        headers: {
+          Authorization: `Bearer ${signature}`
+        }
+      })
+      .then(handleResponse)
 }
 
 export const tickers = {

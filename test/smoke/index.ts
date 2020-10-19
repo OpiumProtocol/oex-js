@@ -16,6 +16,10 @@ describe('OEX tests', () => {
   let selectedTickerData: Tickers.GetTickersData.ResponseBody
   const selectedIndex = 0
 
+  after(async () => {
+    api.socketShutdown()
+  })
+
   describe('OEX API', () => {
     describe('orderbook login', () => {
       it('Login', async () => {
@@ -149,6 +153,14 @@ describe('OEX tests', () => {
           assert.fail(err.response.status, 'Request failed')
         }
       })
+
+      it('/tickers/searchParams GET', async () => {
+        try {
+          await api.metaTickersSearch({ type: 'synthetic' })
+        } catch (err) {
+          assert.fail(err.response.status, 'Request failed')
+        }
+      })
     })
 
     describe('/orders', () => {
@@ -160,19 +172,20 @@ describe('OEX tests', () => {
         }
       })
     })
+
+    describe('/wallet', () => {
+      it('/wallet/balance/', async () => {
+        try {
+          await api.walletTokenBalance()
+        } catch (err) {
+          assert.fail(err.response.status, 'Request failed')
+        }
+      })
+    })
   })
 
   describe('OEX socket tests', () => {
     const socket = api
-
-    before(async () => {
-      const loginData = await socket.getAuthLoginData()
-      socket.signature = signMessage({
-        data: loginData,
-        privateKey: userCredentials.privateKey
-      })
-      socket.authAddress = userCredentials.publicKey
-    })
 
     it('chart:asset', done => {
       socket.onError(err => {

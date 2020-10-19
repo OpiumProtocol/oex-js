@@ -22,7 +22,7 @@ import { Api } from '@opiumteam/oex-js'
 const api = new Api()
 
 api
-  .tickersGetAll()
+  .tickersGetAll({type: 'swap'})
   .then(tickers => console.log(tickers))
 ```
 
