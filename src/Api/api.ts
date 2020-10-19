@@ -126,10 +126,11 @@ export default class Api {
   }
 
   // wallet
-  public walletTokenBalance (): Promise<
-    Wallet.GetWalletBalanceTokens.ResponseBody
-    > {
-    return requests.wallet.tokenBalance(this._endpoint)
+  public walletTokenBalance (
+    authAddress: string = this._authAddress!,
+    signature: string = this._signature!
+  ): Promise<Wallet.GetWalletBalanceTokens.ResponseBody> {
+    return requests.wallet.tokenBalance(this._endpoint, authAddress, signature)
   }
 
   // tickers
