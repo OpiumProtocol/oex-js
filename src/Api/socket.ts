@@ -6,7 +6,6 @@ export enum SocketChannels {
   CHART_DERIV = 'chart:deriv',
   ORDERBOOK_ORDERS_TICKER = 'orderbook:orders:ticker',
   ORDERBOOK_ORDERS_MAKER_ADDRESS = 'orderbook:orders:makerAddress',
-  ORDERBOOK_ORDERS_OVERVIEW = 'orderbook:orders:overview',
   POSITION_ADDRESS = 'positions:address',
   TRADES_TICKER_ALL = 'trades:ticker:all',
   TRADES_TICKER_ADDRESS = 'trades:ticker:address',
@@ -124,31 +123,6 @@ export type OrderbookOrdersMakerAddressReturns = {
     cT: number
     /** expiresAt */
     eT: number
-  }>
-}
-
-export type OrderbookOrdersOverviewParameters = {
-  /** type: option, cds */
-  t: string
-  /** oracleId */
-  o: string
-}
-
-export type OrderbookOrderOverviewReturns = {
-  ch: SocketChannels.ORDERBOOK_ORDERS_OVERVIEW
-  a: 'set'
-  p: OrderbookOrdersOverviewParameters
-  d: Array<{
-    /** ticker hash */
-    t: string
-    /** ASK size */
-    aS: number
-    /** ASK price */
-    aP: number
-    /** BID size */
-    bS: number
-    /** BID price */
-    bP: number
   }>
 }
 
@@ -293,8 +267,6 @@ type ParamsByChannel<
   ? OrderbookOrdersTickerParameters
   : TChannel extends SocketChannels.ORDERBOOK_ORDERS_MAKER_ADDRESS
   ? OrderbookOrdersMakerAddressParameters
-  : TChannel extends SocketChannels.ORDERBOOK_ORDERS_OVERVIEW
-  ? OrderbookOrdersOverviewParameters
   : TChannel extends SocketChannels.TRADES_TICKER_ALL
   ? TradesTickerAllParameters
   : TChannel extends SocketChannels.TRADES_TICKER_ALL
@@ -315,8 +287,6 @@ type ResponseByChannel<
   ? OrderbookOrdersTickerReturns
   : TChannel extends SocketChannels.ORDERBOOK_ORDERS_MAKER_ADDRESS
   ? OrderbookOrdersMakerAddressReturns
-  : TChannel extends SocketChannels.ORDERBOOK_ORDERS_OVERVIEW
-  ? OrderbookOrderOverviewReturns
   : TChannel extends SocketChannels.TRADES_TICKER_ALL
   ? TradesTickerAllReturns
   : TChannel extends SocketChannels.TRADES_TICKER_ALL

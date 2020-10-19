@@ -9,7 +9,6 @@ import {
   ChartDerivParameters,
   OrderbookOrdersTickerParameters,
   OrderbookOrdersMakerAddressParameters,
-  OrderbookOrdersOverviewParameters,
   TradesTickerAllParameters,
   TradesTickerAddressParameters,
   DerivativeStatsParameters
@@ -43,7 +42,7 @@ export default class ApiWithSocket extends Api {
     this._socket.onError(fn)
   }
 
-  public socketShutdown(): void {
+  public socketShutdown (): void {
     this._socket.close()
   }
 
@@ -135,30 +134,6 @@ export default class ApiWithSocket extends Api {
     fn: (response: socket.OrderbookOrdersMakerAddressReturns) => unknown
   ): void {
     this._socket.on(socket.SocketChannels.ORDERBOOK_ORDERS_MAKER_ADDRESS, fn)
-  }
-
-  // orderbook:orders:overview
-  public subscribeOnOrderbookOrdersOverview (
-    payload: Omit<OrderbookOrdersOverviewParameters, 'addr' | 'sig'>
-  ): void {
-    this._socket.subscribe(socket.SocketChannels.ORDERBOOK_ORDERS_OVERVIEW, {
-      ...payload
-    })
-  }
-
-  public unsubscribeOnOrderbookOrdersOverview (
-    payload: OrderbookOrdersOverviewParameters
-  ): void {
-    this._socket.unsubscribe(
-      socket.SocketChannels.ORDERBOOK_ORDERS_OVERVIEW,
-      payload
-    )
-  }
-
-  public onOrderbookOrdersOverview (
-    fn: (response: socket.OrderbookOrderOverviewReturns) => unknown
-  ): void {
-    this._socket.on(socket.SocketChannels.ORDERBOOK_ORDERS_OVERVIEW, fn)
   }
 
   // positions:address
