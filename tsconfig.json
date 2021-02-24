@@ -6,6 +6,8 @@
     "outDir": "./lib",
     "strict": true,
     "noImplicitAny": false,
+    "lib": ["ES2019"],
+    "types": ["node"],
     "esModuleInterop": true,
     "preserveConstEnums": true,
     "inlineSourceMap": true,
